@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Frame.css";
 
 type Photo = { id: string; src: string; name: string; takenAt: string | null };
-const INTERVAL = 8000;
+const INTERVAL = 15000;
 
 function Slide({ photo, className }: { photo: Photo; className?: string }) {
   return (
