@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Frame.css";
+import { Clock } from "../Clock/Clock";
+import { useSettingStore } from "../../store/SettingStore";
 
 type Photo = { id: string; src: string; name: string; takenAt: string | null };
 const INTERVAL = 15000;
@@ -16,6 +18,7 @@ function Slide({ photo, className }: { photo: Photo; className?: string }) {
 export default function Frame() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [index, setIndex] = useState(0);
+  const { clockEnabled } = useSettingStore();
 
   useEffect(() => {
     fetch("/api/images")
@@ -39,19 +42,22 @@ export default function Frame() {
   const next = photos[(index + 1) % n];
 
   return (
-    <div className="frame">
-      {previous.id !== current.id && (
-        <Slide key={previous.id} photo={previous} />
-      )}
-      <Slide key={current.id} photo={current} className="fade" />
-      {next.id !== current.id && (
-        <img
-          key={`preload-${next.id}`}
-          src={next.src}
-          alt=""
-          className="preload-img"
-        />
-      )}
-    </div>
+    <>
+      <div className="frame">
+        {previous.id !== current.id && (
+          <Slide key={previous.id} photo={previous} />
+        )}
+        <Slide key={current.id} photo={current} className="fade" />
+        {next.id !== current.id && (
+          <img
+            key={`preload-${next.id}`}
+            src={next.src}
+            alt=""
+            className="preload-img"
+          />
+        )}
+      </div>
+      {clockEnabled && <Clock />}
+    </>
   );
 }
