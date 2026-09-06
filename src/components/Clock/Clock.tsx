@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import "./Clock.css";
+import { useSettingStore } from "../../store/SettingStore";
 
 export const Clock = () => {
+  const { showSettingsPage } = useSettingStore();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -33,6 +35,8 @@ export const Clock = () => {
           month: "long",
         })}
       </div>
+      <p>v1.0</p>
+      <p>Settings Page: {showSettingsPage ? "true" : "false"}</p>
     </div>
   );
 };

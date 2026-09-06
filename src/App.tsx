@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 import Frame from "./components/Frame/Frame";
 import { SidePanel } from "./components/SidePanel/SidePanel";
 
 function App() {
-  const [showSidePanel, setshowSidePanel] = useState(true);
+  const [showSidePanel, setShowSidePanel] = useState(true);
+  const lastTap = useRef(0);
 
-  const toggleshowSidePanel = () => {
-    setshowSidePanel(!showSidePanel);
+  const handleTap = () => {
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      setShowSidePanel((prev) => !prev);
+    }
+    lastTap.current = now;
   };
 
   return (
-    <div className="root" onDoubleClick={() => toggleshowSidePanel()}>
+    <div className="root" onClick={handleTap}>
       {showSidePanel && <SidePanel />}
       <Frame />
     </div>

@@ -14,12 +14,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const result = await drive.files.list({
     q: `'${process.env.DRIVE_FOLDER_ID}' in parents and mimeType contains 'image/' and trashed = false`,
-    fields: "files(id, name, imageMediaMetadata/time)",
+    fields: "files(id, name, imageMediaMetadata/time, thumbnailLink)",
   });
 
   const images = (result.data.files ?? []).map((file) => ({
     id: file.id,
-    src: `https://drive.google.com/thumbnail?id=${file.id}&sz=w1920-h1080`,
+    src: file.thumbnailLink
+      ? file.thumbnailLink.replace(/=s\d+$/, "=s1920")
+      : `https://drive.google.com/thumbnail?id=${file.id}&sz=w1920-h1080`,
     name: file.name,
     takenAt: file.imageMediaMetadata?.time ?? null,
   }));

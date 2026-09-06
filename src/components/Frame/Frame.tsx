@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import "./Frame.css";
 import { Clock } from "../Clock/Clock";
 import { useSettingStore } from "../../store/SettingStore";
+import { Settings } from "../Settings/Settings";
 
 type Photo = { id: string; src: string; name: string; takenAt: string | null };
-const INTERVAL = 15000;
+const INTERVAL = 30000;
 
 function Slide({ photo, className }: { photo: Photo; className?: string }) {
   return (
@@ -18,7 +19,7 @@ function Slide({ photo, className }: { photo: Photo; className?: string }) {
 export default function Frame() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [index, setIndex] = useState(0);
-  const { clockEnabled } = useSettingStore();
+  const { clockEnabled, showSettingsPage } = useSettingStore();
 
   useEffect(() => {
     fetch("/api/images")
@@ -57,6 +58,7 @@ export default function Frame() {
           />
         )}
       </div>
+      {showSettingsPage && <Settings />}
       {clockEnabled && <Clock />}
     </>
   );
