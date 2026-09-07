@@ -75,11 +75,17 @@ photos render in Chromium even though a raw `.HEIC` would not.
 - Background preloading of the upcoming photo (smooth transitions over slow wifi)
 - Blurred-fill backdrop so portrait/odd-ratio photos show in full with no dead black bars
 - Memory-bounded: at most a few `<img>` elements in the DOM regardless of folder size
+- World clock overlay with flip-style digits, showing the date plus configurable
+  family members' time zones; collapses to a single clock and expands on tap
+- Settings panel (persisted to `localStorage` via Zustand) to edit each clock's
+  city/person/time zone, pick a colour theme (Glass / Graphite / Paper), and set
+  whether clocks are expanded by default
+- "About this image" panel (scaffolded, not yet wired to real photo metadata)
 
 **Planned**
 
 - Ken Burns slow pan-and-zoom on each photo
-- Subtle clock / date overlay (optionally weather)
+- Wire the About panel to the currently displayed photo's name/date
 - "On This Day" — surface photos taken on today's date in past years (uses captured EXIF date, already collected as `takenAt`)
 - Overnight screen-off scheduling
 
@@ -90,14 +96,22 @@ photos render in Chromium even though a raw `.HEIC` would not.
 ```
 pi-photo-frame/
 ├── api/
-│   └── images.ts        # serverless function: lists Drive folder, returns image URLs
+│   └── images.ts             # serverless function: lists Drive folder, returns image URLs
 ├── src/
-│   ├── Frame.tsx        # the slideshow component
-│   ├── Frame.css        # crossfade, blurred backdrop, layout
+│   ├── components/
+│   │   ├── Frame/            # the slideshow (crossfade, blurred backdrop, preloading)
+│   │   ├── Clock/            # world clock overlay + flip-digit animation, time zone list
+│   │   ├── Settings/         # settings panel: clocks, theme picker, collapse-by-default toggle
+│   │   ├── About/            # "about this image" panel (scaffolded)
+│   │   ├── Modal/            # shared modal shell used by Settings/About
+│   │   └── Toggle/           # controlled on/off switch component
+│   ├── store/
+│   │   └── SettingStore.ts   # Zustand store, persisted to localStorage
+│   ├── theme/                # clock colour themes (Glass / Graphite / Paper)
 │   ├── App.tsx
 │   └── main.tsx
-├── setup-kiosk.sh       # one-time Pi kiosk setup script
-├── .env                 # local secrets — NOT committed
+├── setup-kiosk.sh            # one-time Pi kiosk setup script
+├── .env                       # local secrets — NOT committed
 └── README.md
 ```
 
@@ -105,7 +119,7 @@ pi-photo-frame/
 
 ## Prerequisites
 
-- Node.js and npm
+- Node.js and pnpm
 - A Google account (to own the Drive folder and Cloud project)
 - A free Vercel account
 - For the device: a Raspberry Pi Zero 2 W, microSD card, and a compatible HDMI screen
@@ -117,11 +131,11 @@ pi-photo-frame/
 ```bash
 git clone <your-repo-url>
 cd pi-photo-frame
-npm install
+pnpm install
 ```
 
 Create a `.env` file in the project root (see [Environment variables](#environment-variables)),
-then run the dev server **with the Vercel CLI**, not `npm run dev` — plain Vite
+then run the dev server **with the Vercel CLI**, not `pnpm dev` — plain Vite
 only serves the frontend and won't run the `/api` function:
 
 ```bash

@@ -1,0 +1,6 @@
+.about-body {
+  padding: 8px 0 4px;
+  color: var(--wc-field-label);
+  font-size: 15px;
+  line-height: 1.6;
+}

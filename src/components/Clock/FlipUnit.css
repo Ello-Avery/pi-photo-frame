@@ -1,0 +1,142 @@
+/*
+ * Geometry constants (FLIP_W 66, FLIP_H 60, FLIP_FS 38, FLIP_R 9) match the
+ * source design exactly and are fixed, not themed — hardcoded rather than
+ * exposed as custom properties.
+ */
+
+.flip-unit {
+  position: relative;
+  width: 66px;
+  height: 60px;
+}
+
+.flip-unit--static {
+  display: flex;
+  flex-direction: column;
+}
+
+.flip-unit--light {
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
+}
+
+.flip-unit--dark {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+}
+
+.flip-half {
+  position: relative;
+  width: 66px;
+  height: 30px;
+  overflow: hidden;
+}
+
+.flip-half--top {
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -0.5px 0 rgba(0, 0, 0, 0.55);
+}
+
+.flip-half--bottom {
+  border-bottom-left-radius: 9px;
+  border-bottom-right-radius: 9px;
+  box-shadow: inset 0 0.5px 0 rgba(0, 0, 0, 0.55);
+}
+
+.flip-half--light.flip-half--top {
+  background: linear-gradient(180deg, #4a4741 0%, #3c3934 100%);
+}
+.flip-half--light.flip-half--bottom {
+  background: linear-gradient(180deg, #2b2924 0%, #33302b 100%);
+}
+.flip-half--dark.flip-half--top {
+  background: linear-gradient(180deg, #2f2f31 0%, #242426 100%);
+}
+.flip-half--dark.flip-half--bottom {
+  background: linear-gradient(180deg, #161618 0%, #1d1d1f 100%);
+}
+
+.flip-half__glyph {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 38px;
+  letter-spacing: 1px;
+}
+
+.flip-half__glyph--top {
+  top: 0;
+}
+
+.flip-half__glyph--bottom {
+  top: -30px;
+}
+
+.flip-half__glyph--light {
+  color: #f5f2ec;
+}
+
+.flip-half__glyph--dark {
+  color: #e9e9ea;
+}
+
+.flip-unit--flipping {
+  perspective: 198px;
+}
+
+.flip-layer {
+  position: absolute;
+  left: 0;
+}
+
+.flip-layer--static-top {
+  top: 0;
+  z-index: 1;
+}
+
+.flip-layer--static-bottom {
+  bottom: 0;
+  z-index: 1;
+}
+
+.flip-layer--leaf-top {
+  top: 0;
+  transform-origin: bottom;
+  backface-visibility: hidden;
+  z-index: 3;
+  animation: fcTop 0.3s ease-in forwards;
+}
+
+.flip-layer--leaf-bottom {
+  bottom: 0;
+  transform-origin: top;
+  backface-visibility: hidden;
+  z-index: 3;
+  animation: fcBottom 0.64s ease-out forwards;
+}
+
+@keyframes fcTop {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes fcBottom {
+  0%,
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}

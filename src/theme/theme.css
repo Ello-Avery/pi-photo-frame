@@ -1,0 +1,141 @@
+/*
+ * World Clock theme tokens.
+ *
+ * Every themed surface (the clock card, and any popup rendered through
+ * <Modal>) sets [data-wc-theme] on its own root and reads these custom
+ * properties. Component CSS should never hard-code a themed color — add a
+ * token here instead so the card and every popup restyle together.
+ */
+
+[data-wc-theme="glass"] {
+  /* card */
+  --wc-card-bg: rgba(20, 20, 22, 0.42);
+  --wc-card-border: 1px solid rgba(255, 255, 255, 0.16);
+  --wc-card-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --wc-card-blur: blur(28px) saturate(140%);
+  --wc-date: rgba(255, 255, 255, 0.78);
+  --wc-divider: rgba(255, 255, 255, 0.14);
+  --wc-city: #f3f3f3;
+  --wc-person: rgba(255, 255, 255, 0.62);
+  --wc-icon: rgba(255, 255, 255, 0.8);
+  --wc-icon-hover: #fff;
+  --wc-footer-text: rgba(255, 255, 255, 0.86);
+
+  /* popups */
+  --wc-overlay-bg: rgba(8, 8, 10, 0.55);
+  --wc-modal-bg: rgba(26, 26, 29, 0.92);
+  --wc-modal-border: 1px solid rgba(255, 255, 255, 0.16);
+  --wc-modal-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --wc-title: #f5f5f5;
+  --wc-section-label: rgba(255, 255, 255, 0.5);
+  --wc-row-bg: rgba(255, 255, 255, 0.05);
+  --wc-row-border: rgba(255, 255, 255, 0.09);
+  --wc-field-label: rgba(255, 255, 255, 0.62);
+  --wc-input-bg: rgba(0, 0, 0, 0.32);
+  --wc-input-border: rgba(255, 255, 255, 0.18);
+  --wc-input-focus: rgba(255, 255, 255, 0.55);
+  --wc-input-text: #f2f2f2;
+  --wc-option-bg: #1a1a1d;
+  --wc-swatch-border: rgba(255, 255, 255, 0.16);
+  --wc-swatch-hover: rgba(255, 255, 255, 0.4);
+  --wc-swatch-label: #f0f0f0;
+  --wc-swatch-badge-bg: #fff;
+  --wc-swatch-badge-text: #17171a;
+  --wc-done-bg: #f4f3f1;
+  --wc-done-hover: #fff;
+  --wc-done-text: #17171a;
+
+  /* toggle */
+
+  --wc-toggle-bg: rgba(255, 255, 255, 0.05);
+  --wc-toggle-active: #4caf50;
+}
+
+[data-wc-theme="graphite"] {
+  /* card */
+  --wc-card-bg: #17171a;
+  --wc-card-border: 1px solid rgba(255, 255, 255, 0.09);
+  --wc-card-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  --wc-card-blur: none;
+  --wc-date: rgba(255, 255, 255, 0.74);
+  --wc-divider: rgba(255, 255, 255, 0.1);
+  --wc-city: #f3f3f3;
+  --wc-person: rgba(255, 255, 255, 0.6);
+  --wc-icon: rgba(255, 255, 255, 0.8);
+  --wc-icon-hover: #fff;
+  --wc-footer-text: rgba(255, 255, 255, 0.86);
+
+  /* popups */
+  --wc-overlay-bg: rgba(8, 8, 10, 0.55);
+  --wc-modal-bg: #17171a;
+  --wc-modal-border: 1px solid rgba(255, 255, 255, 0.1);
+  --wc-modal-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --wc-title: #f5f5f5;
+  --wc-section-label: rgba(255, 255, 255, 0.5);
+  --wc-row-bg: rgba(255, 255, 255, 0.05);
+  --wc-row-border: rgba(255, 255, 255, 0.09);
+  --wc-field-label: rgba(255, 255, 255, 0.62);
+  --wc-input-bg: rgba(0, 0, 0, 0.32);
+  --wc-input-border: rgba(255, 255, 255, 0.18);
+  --wc-input-focus: rgba(255, 255, 255, 0.55);
+  --wc-input-text: #f2f2f2;
+  --wc-option-bg: #1a1a1d;
+  --wc-swatch-border: rgba(255, 255, 255, 0.16);
+  --wc-swatch-hover: rgba(255, 255, 255, 0.4);
+  --wc-swatch-label: #f0f0f0;
+  --wc-swatch-badge-bg: #fff;
+  --wc-swatch-badge-text: #17171a;
+  --wc-done-bg: #f4f3f1;
+  --wc-done-hover: #fff;
+  --wc-done-text: #17171a;
+
+  /* toggle */
+  --wc-toggle-bg: rgba(255, 255, 255, 0.05);
+  --wc-toggle-active: #4caf50;
+}
+
+[data-wc-theme="paper"] {
+  /* card */
+  --wc-card-bg: #f7f5f1;
+  --wc-card-border: 1px solid rgba(0, 0, 0, 0.06);
+  --wc-card-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  --wc-card-blur: none;
+  --wc-date: #635e56;
+  --wc-divider: rgba(0, 0, 0, 0.12);
+  --wc-city: #1c1a17;
+  --wc-person: #645f57;
+  --wc-icon: #3b3833;
+  --wc-icon-hover: #000;
+  --wc-footer-text: #3b3833;
+
+  /* popups */
+  --wc-overlay-bg: rgba(30, 26, 20, 0.45);
+  --wc-modal-bg: #f7f5f1;
+  --wc-modal-border: 1px solid rgba(0, 0, 0, 0.08);
+  --wc-modal-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+  --wc-title: #1c1a17;
+  --wc-section-label: #736d64;
+  --wc-row-bg: rgba(0, 0, 0, 0.035);
+  --wc-row-border: rgba(0, 0, 0, 0.1);
+  --wc-field-label: #645f57;
+  --wc-input-bg: #fffefb;
+  --wc-input-border: rgba(0, 0, 0, 0.22);
+  --wc-input-focus: rgba(0, 0, 0, 0.55);
+  --wc-input-text: #1c1a17;
+  --wc-option-bg: #fffefb;
+  --wc-swatch-border: rgba(0, 0, 0, 0.16);
+  --wc-swatch-hover: rgba(0, 0, 0, 0.42);
+  --wc-swatch-label: #2a2723;
+  --wc-swatch-badge-bg: #17171a;
+  --wc-swatch-badge-text: #fff;
+  --wc-done-bg: #1c1a17;
+  --wc-done-hover: #000;
+  --wc-done-text: #f7f5f1;
+
+  /* toggle */
+  --wc-toggle-bg: rgba(0, 0, 0, 0.035);
+  --wc-toggle-active: #4caf50;
+}
