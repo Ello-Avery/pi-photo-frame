@@ -4,6 +4,8 @@ import { useSettingStore, type ClockEntry } from "../../store/SettingStore";
 import { ZONES } from "../Clock/zones";
 import { THEMES } from "../../theme/theme";
 import Toggle from "../Toggle/toggle";
+import { useState } from "react";
+import Keyboard from "../Keyboard/keyboard";
 
 function nowPreview(tz: string): string {
   try {
@@ -35,6 +37,11 @@ export const Settings = () => {
     closeSettings,
   } = useSettingStore();
 
+  const [activeField, setActiveField] = useState<{
+    index: number;
+    field: "city" | "person";
+  } | null>(null);
+
   const handleChange =
     (index: number, field: keyof ClockEntry) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -51,20 +58,32 @@ export const Settings = () => {
                 <span className="settings-field__label">Location</span>
                 <input
                   type="text"
-                  className="settings-input"
+                  className={`settings-input ${
+                    activeField?.index === i && activeField.field === "city"
+                      ? "is-active"
+                      : ""
+                  }`}
                   value={clock.city}
                   onChange={handleChange(i, "city")}
+                  onFocus={() => setActiveField({ index: i, field: "city" })}
                   placeholder="City"
+                  inputMode="none"
                 />
               </label>
               <label className="settings-field">
                 <span className="settings-field__label">Family Member</span>
                 <input
                   type="text"
-                  className="settings-input"
+                  className={`settings-input ${
+                    activeField?.index === i && activeField.field === "person"
+                      ? "is-active"
+                      : ""
+                  }`}
                   value={clock.person}
                   onChange={handleChange(i, "person")}
+                  onFocus={() => setActiveField({ index: i, field: "person" })}
                   placeholder="Person's name"
+                  inputMode="none"
                 />
               </label>
             </div>
@@ -124,6 +143,15 @@ export const Settings = () => {
           </button>
         ))}
       </div>
+      <Keyboard
+        open={activeField !== null}
+        value={activeField ? clocks[activeField.index][activeField.field] : ""}
+        onChange={(value: string) => {
+          if (activeField)
+            setClockField(activeField.index, activeField.field, value);
+        }}
+        onEnter={() => setActiveField(null)}
+      />
     </Modal>
   );
 };

@@ -51,6 +51,16 @@
 
   --wc-toggle-bg: rgba(255, 255, 255, 0.05);
   --wc-toggle-active: #4caf50;
+
+  /* keyboard */
+  --wc-keyboard-bg: rgba(26, 26, 29, 0.92);
+  --wc-keyboard-border: 1px solid rgba(255, 255, 255, 0.14);
+  --wc-keyboard-shadow: 0 -20px 60px rgba(0, 0, 0, 0.45);
+  --wc-key-bg: rgba(255, 255, 255, 0.08);
+  --wc-key-border: rgba(255, 255, 255, 0.1);
+  --wc-key-text: #f2f2f2;
+  --wc-key-action-bg: rgba(255, 255, 255, 0.16);
+  --wc-key-pressed: rgba(255, 255, 255, 0.3);
 }
 
 [data-wc-theme="graphite"] {
@@ -95,6 +105,16 @@
   /* toggle */
   --wc-toggle-bg: rgba(255, 255, 255, 0.05);
   --wc-toggle-active: #4caf50;
+
+  /* keyboard */
+  --wc-keyboard-bg: #1f1f23;
+  --wc-keyboard-border: 1px solid rgba(255, 255, 255, 0.14);
+  --wc-keyboard-shadow: 0 -20px 60px rgba(0, 0, 0, 0.45);
+  --wc-key-bg: rgba(255, 255, 255, 0.08);
+  --wc-key-border: rgba(255, 255, 255, 0.1);
+  --wc-key-text: #f2f2f2;
+  --wc-key-action-bg: rgba(255, 255, 255, 0.16);
+  --wc-key-pressed: rgba(255, 255, 255, 0.3);
 }
 
 [data-wc-theme="paper"] {
@@ -138,4 +158,14 @@
   /* toggle */
   --wc-toggle-bg: rgba(0, 0, 0, 0.035);
   --wc-toggle-active: #4caf50;
+
+  /* keyboard */
+  --wc-keyboard-bg: #ece9e3;
+  --wc-keyboard-border: 1px solid rgba(0, 0, 0, 0.1);
+  --wc-keyboard-shadow: 0 -20px 60px rgba(0, 0, 0, 0.25);
+  --wc-key-bg: #fffefb;
+  --wc-key-border: rgba(0, 0, 0, 0.12);
+  --wc-key-text: #1c1a17;
+  --wc-key-action-bg: #dcd8d0;
+  --wc-key-pressed: #cfcac1;
 }

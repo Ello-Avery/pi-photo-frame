@@ -129,3 +129,7 @@
   font-weight: 500;
   color: var(--wc-swatch-label);
 }
+
+.settings-input.is-active {
+  border-color: var(--wc-input-focus);
+}

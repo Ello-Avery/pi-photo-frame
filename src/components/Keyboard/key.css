@@ -1,0 +1,43 @@
+.key {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 4rem;
+  padding: 0;
+  border-radius: 11px;
+  border: 1px solid var(--wc-key-border);
+  background: var(--wc-key-bg);
+  color: var(--wc-key-text);
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.08s;
+}
+
+.key:active {
+  background: var(--wc-key-pressed);
+}
+
+.key-lg {
+  flex-grow: 2;
+}
+
+.key-xl {
+  flex-grow: 5;
+}
+
+.key-action {
+  background: var(--wc-key-action-bg);
+  font-size: 1.3rem;
+}
+
+.key-enter {
+  border-color: transparent;
+  background: var(--wc-done-bg);
+  color: var(--wc-done-text);
+}
+.key-enter:active {
+  background: var(--wc-done-hover);
+}
