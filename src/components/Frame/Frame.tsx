@@ -71,15 +71,15 @@ export default function Frame() {
   };
 
   // Depends on `index` so manual navigation restarts the countdown, giving
-  // the chosen photo a full interval. Paused while browsing the gallery.
+  // the chosen photo a full interval. Paused while the gallery or About is open.
   useEffect(() => {
-    if (photos.length === 0 || galleryOpen) return;
+    if (photos.length === 0 || galleryOpen || aboutOpen) return;
     const timer = setTimeout(() => {
       setPreviousId(currentId.current);
       setIndex((i) => (i + 1) % photos.length);
     }, INTERVAL);
     return () => clearTimeout(timer);
-  }, [photos, index, galleryOpen]);
+  }, [photos, index, galleryOpen, aboutOpen]);
 
   if (photos.length === 0) return <div className="frame" />;
 
@@ -122,7 +122,7 @@ export default function Frame() {
         />
       )}
       {settingsOpen && <Settings />}
-      {aboutOpen && <About />}
+      {aboutOpen && <About photoId={current.id} />}
     </>
   );
 }
