@@ -4,6 +4,8 @@ import { Clock } from "../Clock/Clock";
 import { useSettingStore } from "../../store/SettingStore";
 import { Settings } from "../Settings/Settings";
 import { About } from "../About/About";
+import { PhotoMenu } from "../PhotoMenu/PhotoMenu";
+import { Gallery } from "../Gallery/Gallery";
 
 type Photo = { id: string; src: string; name: string; takenAt: string | null };
 const INTERVAL = 30000;
@@ -30,6 +32,10 @@ function Slide({ photo, className }: { photo: Photo; className?: string }) {
 export default function Frame() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [index, setIndex] = useState(0);
+  // The photo shown before the current one, kept as the underlay for the
+  // crossfade. Tracked explicitly because manual navigation can jump anywhere.
+  const [previousId, setPreviousId] = useState<string | null>(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
   const { settingsOpen, aboutOpen } = useSettingStore();
 
   const currentId = useRef<string | null>(null);
@@ -57,25 +63,35 @@ export default function Frame() {
     currentId.current = photos[index]?.id ?? null;
   }, [photos, index]);
 
+  const goTo = (i: number) => {
+    const n = photos.length;
+    if (n === 0) return;
+    setPreviousId(currentId.current);
+    setIndex(((i % n) + n) % n);
+  };
+
+  // Depends on `index` so manual navigation restarts the countdown, giving
+  // the chosen photo a full interval. Paused while browsing the gallery.
   useEffect(() => {
-    if (photos.length === 0) return;
-    const timer = setInterval(() => {
+    if (photos.length === 0 || galleryOpen) return;
+    const timer = setTimeout(() => {
+      setPreviousId(currentId.current);
       setIndex((i) => (i + 1) % photos.length);
     }, INTERVAL);
-    return () => clearInterval(timer);
-  }, [photos]);
+    return () => clearTimeout(timer);
+  }, [photos, index, galleryOpen]);
 
   if (photos.length === 0) return <div className="frame" />;
 
   const n = photos.length;
   const current = photos[index];
-  const previous = photos[(index - 1 + n) % n];
+  const previous = photos.find((p) => p.id === previousId);
   const next = photos[(index + 1) % n];
 
   return (
     <>
       <div className="frame">
-        {previous.id !== current.id && (
+        {previous && previous.id !== current.id && (
           <Slide key={previous.id} photo={previous} />
         )}
         <Slide key={current.id} photo={current} className="fade" />
@@ -88,7 +104,23 @@ export default function Frame() {
           />
         )}
       </div>
+      <PhotoMenu
+        onPrev={() => goTo(index - 1)}
+        onGallery={() => setGalleryOpen(true)}
+        onNext={() => goTo(index + 1)}
+      />
       <Clock />
+      {galleryOpen && (
+        <Gallery
+          photos={photos}
+          currentId={current.id}
+          onSelect={(i) => {
+            if (i !== index) goTo(i);
+            setGalleryOpen(false);
+          }}
+          onClose={() => setGalleryOpen(false)}
+        />
+      )}
       {settingsOpen && <Settings />}
       {aboutOpen && <About />}
     </>
