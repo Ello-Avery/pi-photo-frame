@@ -1,0 +1,47 @@
+/*
+ * Mirrors the clock card in the opposite corner: same --u scale, same
+ * offsets and the same card tokens from src/theme/theme.css.
+ */
+.photo-menu {
+  --u: clamp(0.567px, min(0.0632vw, 0.1013vh), 1.62px);
+  position: fixed;
+  left: calc(48 * var(--u));
+  bottom: calc(48 * var(--u));
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  padding: calc(8 * var(--u));
+  border-radius: calc(26 * var(--u));
+  background: var(--wc-card-bg);
+  backdrop-filter: var(--wc-card-blur);
+  -webkit-backdrop-filter: var(--wc-card-blur);
+  border: var(--wc-card-border);
+  box-shadow: var(--wc-card-shadow);
+}
+
+.photo-menu__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(56 * var(--u));
+  height: calc(56 * var(--u));
+  padding: 0;
+  border: none;
+  border-radius: calc(18 * var(--u));
+  background: transparent;
+  color: var(--wc-icon);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.photo-menu__button:hover {
+  color: var(--wc-icon-hover);
+}
+.photo-menu__button:active {
+  background: var(--wc-divider);
+}
+
+.photo-menu__button svg {
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+}
