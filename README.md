@@ -81,13 +81,17 @@ photos render in Chromium even though a raw `.HEIC` would not.
   city/person/time zone, pick a colour theme (Glass / Graphite / Paper), and set
   whether clocks are expanded by default
 - "About this image" panel (scaffolded, not yet wired to real photo metadata)
+- Night mode: overnight (default 21:00–07:00, in the main clock's time zone) the
+  frame shows a black screen with a large, dim clock and pauses the slideshow.
+  A tap brings the photos back for a few minutes; it returns to night mode on its
+  own. Window, wake time and clock brightness are in Settings. Add `?night=1` to
+  the URL to force night mode for testing.
 
 **Planned**
 
 - Ken Burns slow pan-and-zoom on each photo
 - Wire the About panel to the currently displayed photo's name/date
 - "On This Day" — surface photos taken on today's date in past years (uses captured EXIF date, already collected as `takenAt`)
-- Overnight screen-off scheduling
 
 ---
 
@@ -101,12 +105,14 @@ pi-photo-frame/
 │   ├── components/
 │   │   ├── Frame/            # the slideshow (crossfade, blurred backdrop, preloading)
 │   │   ├── Clock/            # world clock overlay + flip-digit animation, time zone list
-│   │   ├── Settings/         # settings panel: clocks, theme picker, collapse-by-default toggle
+│   │   ├── NightMode/        # overnight dim clock overlay, night window detection
+│   │   ├── Settings/         # settings panel: clocks, theme, collapse-by-default, night mode
 │   │   ├── About/            # "about this image" panel (scaffolded)
 │   │   ├── Modal/            # shared modal shell used by Settings/About
 │   │   └── Toggle/           # controlled on/off switch component
 │   ├── store/
-│   │   └── SettingStore.ts   # Zustand store, persisted to localStorage
+│   │   ├── SettingStore.ts   # Zustand store, persisted to localStorage
+│   │   └── NightStore.ts     # transient night-mode state (awake / wake timer)
 │   ├── theme/                # clock colour themes (Glass / Graphite / Paper)
 │   ├── App.tsx
 │   └── main.tsx
@@ -236,6 +242,20 @@ works in both.
 > **Hardware note:** the Pi Zero 2 W uses **mini-HDMI**. The Waveshare 7" screen
 > kit ships a **micro-HDMI** adapter (for the Pi 4/5), so a separate
 > mini-HDMI-to-HDMI adapter is required.
+
+### Optional: turn the screen fully off in the small hours
+
+The screen has no software backlight control, so night mode can only dim the
+picture. For the deepest hours you can switch the HDMI signal off entirely with
+cron (`crontab -e` on the Pi); a tap on the touchscreen still wakes it:
+
+```
+0 1 * * * DISPLAY=:0 XAUTHORITY=/home/elloavery/.Xauthority xset dpms force off
+0 6 * * * DISPLAY=:0 XAUTHORITY=/home/elloavery/.Xauthority sh -c 'xset dpms force on; xset -dpms'
+```
+
+Cron uses the Pi's system time zone. After changing it, run
+`sudo systemctl restart cron` so the schedule follows the new time zone.
 
 ---
 

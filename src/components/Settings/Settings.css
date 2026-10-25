@@ -130,6 +130,41 @@
   color: var(--wc-swatch-label);
 }
 
+.settings-section-label--spaced {
+  margin-top: 18px;
+}
+
+.settings-night {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--wc-row-bg);
+  border: 1px solid var(--wc-row-border);
+}
+
+.settings-night__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-night__times {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.settings-range {
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  accent-color: var(--wc-toggle-active);
+  touch-action: manipulation;
+}
+
 .settings-input.is-active {
   border-color: var(--wc-input-focus);
 }
