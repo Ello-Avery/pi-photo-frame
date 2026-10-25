@@ -29,7 +29,11 @@ function Slide({ photo, className }: { photo: Photo; className?: string }) {
   );
 }
 
-export default function Frame() {
+/**
+ * `paused` (night mode) stops the slide timer and freezes CSS animations, but
+ * keeps everything mounted so waking shows the same photo instantly.
+ */
+export default function Frame({ paused = false }: { paused?: boolean }) {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [index, setIndex] = useState(0);
   // The photo shown before the current one, kept as the underlay for the
@@ -71,17 +75,20 @@ export default function Frame() {
   };
 
   // Depends on `index` so manual navigation restarts the countdown, giving
-  // the chosen photo a full interval. Paused while the gallery or About is open.
+  // the chosen photo a full interval. Paused while the gallery or About is
+  // open, or during night mode.
   useEffect(() => {
-    if (photos.length === 0 || galleryOpen || aboutOpen) return;
+    if (photos.length === 0 || galleryOpen || aboutOpen || paused) return;
     const timer = setTimeout(() => {
       setPreviousId(currentId.current);
       setIndex((i) => (i + 1) % photos.length);
     }, INTERVAL);
     return () => clearTimeout(timer);
-  }, [photos, index, galleryOpen, aboutOpen]);
+  }, [photos, index, galleryOpen, aboutOpen, paused]);
 
-  if (photos.length === 0) return <div className="frame" />;
+  const frameClass = `frame ${paused ? "paused" : ""}`;
+
+  if (photos.length === 0) return <div className={frameClass} />;
 
   const n = photos.length;
   const current = photos[index];
@@ -90,7 +97,7 @@ export default function Frame() {
 
   return (
     <>
-      <div className="frame">
+      <div className={frameClass}>
         {previous && previous.id !== current.id && (
           <Slide key={previous.id} photo={previous} />
         )}

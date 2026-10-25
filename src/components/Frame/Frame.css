@@ -13,6 +13,12 @@
   animation: fadein 2s ease-in-out;
 }
 
+/* Night mode: freeze animations in place rather than restarting them. */
+.frame.paused .slide,
+.frame.paused .photo {
+  animation-play-state: paused;
+}
+
 @keyframes fadein {
   from {
     opacity: 0;

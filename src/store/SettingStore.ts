@@ -10,6 +10,24 @@ const DEFAULT_CLOCKS: ClockEntry[] = [
   { person: "Olivia", city: "Seoul", tz: "Asia/Seoul" },
 ];
 
+export type NightModeSettings = {
+  enabled: boolean;
+  /** 24h "HH:MM"; the window may cross midnight. */
+  start: string;
+  end: string;
+  /** How long a tap keeps the slideshow on during the night. */
+  wakeMinutes: number;
+  clockOpacity: number;
+};
+
+const DEFAULT_NIGHT_MODE: NightModeSettings = {
+  enabled: true,
+  start: "21:00",
+  end: "07:00",
+  wakeMinutes: 5,
+  clockOpacity: 0.12,
+};
+
 interface SettingStore {
   clocks: ClockEntry[];
   setClockField: (
@@ -24,6 +42,9 @@ interface SettingStore {
   collapsed: boolean;
   toggleCollapse: () => void;
   setCollapsed: (collapsed: boolean) => void;
+
+  nightMode: NightModeSettings;
+  setNightMode: (patch: Partial<NightModeSettings>) => void;
 
   settingsOpen: boolean;
   openSettings: () => void;
@@ -52,6 +73,10 @@ export const useSettingStore = create<SettingStore>()(
       toggleCollapse: () => set((state) => ({ collapsed: !state.collapsed })),
       setCollapsed: (collapsed) => set({ collapsed }),
 
+      nightMode: DEFAULT_NIGHT_MODE,
+      setNightMode: (patch) =>
+        set((state) => ({ nightMode: { ...state.nightMode, ...patch } })),
+
       settingsOpen: false,
       openSettings: () => set({ settingsOpen: true }),
       closeSettings: () => set({ settingsOpen: false }),
@@ -66,7 +91,18 @@ export const useSettingStore = create<SettingStore>()(
         clocks: state.clocks,
         theme: state.theme,
         collapsed: state.collapsed,
+        nightMode: state.nightMode,
       }),
+      // Fill in night mode fields missing from older saved prefs, rather than
+      // the default shallow merge dropping them.
+      merge: (persisted, current) => {
+        const saved = (persisted ?? {}) as Partial<SettingStore>;
+        return {
+          ...current,
+          ...saved,
+          nightMode: { ...current.nightMode, ...saved.nightMode },
+        };
+      },
     },
   ),
 );

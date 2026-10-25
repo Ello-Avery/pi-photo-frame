@@ -26,6 +26,14 @@ function nowPreview(tz: string): string {
   }
 }
 
+// Night window start/end choices in 15-minute steps. Selects rather than
+// <input type="time">, which needs a keyboard on the Pi's touchscreen.
+const TIME_OPTIONS = Array.from({ length: 96 }, (_, i) => {
+  const hh = String(Math.floor(i / 4)).padStart(2, "0");
+  const mm = String((i % 4) * 15).padStart(2, "0");
+  return `${hh}:${mm}`;
+});
+
 export const Settings = () => {
   const {
     clocks,
@@ -34,6 +42,8 @@ export const Settings = () => {
     setTheme,
     collapsed,
     setCollapsed,
+    nightMode,
+    setNightMode,
     closeSettings,
   } = useSettingStore();
 
@@ -142,6 +152,84 @@ export const Settings = () => {
             <span className="settings-swatch__label">{t.label}</span>
           </button>
         ))}
+      </div>
+
+      <div className="settings-section-label settings-section-label--spaced">
+        Night mode
+      </div>
+      <div className="settings-night">
+        <div className="settings-night__toggle">
+          <span className="settings-field__label">
+            Show a dim clock overnight (uses {clocks[0]?.city || "main clock"}{" "}
+            time)
+          </span>
+          <Toggle
+            checked={nightMode.enabled}
+            onChange={(enabled) => setNightMode({ enabled })}
+          />
+        </div>
+        <div className="settings-night__times">
+          <label className="settings-field">
+            <span className="settings-field__label">From</span>
+            <select
+              className="settings-select"
+              value={nightMode.start}
+              onChange={(e) => setNightMode({ start: e.target.value })}
+            >
+              {TIME_OPTIONS.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="settings-field">
+            <span className="settings-field__label">Until</span>
+            <select
+              className="settings-select"
+              value={nightMode.end}
+              onChange={(e) => setNightMode({ end: e.target.value })}
+            >
+              {TIME_OPTIONS.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <label className="settings-field">
+          <span className="settings-field__label">
+            A tap shows photos for {nightMode.wakeMinutes} min
+          </span>
+          <input
+            type="range"
+            className="settings-range"
+            min={1}
+            max={30}
+            step={1}
+            value={nightMode.wakeMinutes}
+            onChange={(e) =>
+              setNightMode({ wakeMinutes: Number(e.target.value) })
+            }
+          />
+        </label>
+        <label className="settings-field">
+          <span className="settings-field__label">
+            Clock brightness {Math.round(nightMode.clockOpacity * 100)}%
+          </span>
+          <input
+            type="range"
+            className="settings-range"
+            min={0.03}
+            max={0.5}
+            step={0.01}
+            value={nightMode.clockOpacity}
+            onChange={(e) =>
+              setNightMode({ clockOpacity: Number(e.target.value) })
+            }
+          />
+        </label>
       </div>
       <Keyboard
         open={activeField !== null}
