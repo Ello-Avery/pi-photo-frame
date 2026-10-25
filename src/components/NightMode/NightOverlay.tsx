@@ -22,7 +22,9 @@ export const NightOverlay = () => {
       }}
     >
       <span className="night-overlay__time" style={{ opacity }}>
-        {hh}:{mm}
+        {hh}
+        <span className="night-overlay__colon">:</span>
+        {mm}
       </span>
     </div>
   );

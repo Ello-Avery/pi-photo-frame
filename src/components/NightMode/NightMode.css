@@ -30,3 +30,9 @@
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
+
+/* A text colon sits at lowercase height; lift it to the digits' centre. */
+.night-overlay__colon {
+  display: inline-block;
+  transform: translateY(-0.105em);
+}
