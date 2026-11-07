@@ -20,13 +20,29 @@ export type NightModeSettings = {
   clockOpacity: number;
 };
 
+export const WAKE_MINUTE_OPTIONS = [1, 2, 3];
+export const CLOCK_OPACITY_OPTIONS = [0.15, 0.25, 0.35];
+
 const DEFAULT_NIGHT_MODE: NightModeSettings = {
   enabled: true,
   start: "21:00",
   end: "07:00",
-  wakeMinutes: 5,
-  clockOpacity: 0.12,
+  wakeMinutes: 2,
+  clockOpacity: 0.25,
 };
+
+/** Snap saved values that are no longer offered back to the defaults. */
+function sanitizeNightMode(night: NightModeSettings): NightModeSettings {
+  return {
+    ...night,
+    wakeMinutes: WAKE_MINUTE_OPTIONS.includes(night.wakeMinutes)
+      ? night.wakeMinutes
+      : DEFAULT_NIGHT_MODE.wakeMinutes,
+    clockOpacity: CLOCK_OPACITY_OPTIONS.includes(night.clockOpacity)
+      ? night.clockOpacity
+      : DEFAULT_NIGHT_MODE.clockOpacity,
+  };
+}
 
 interface SettingStore {
   clocks: ClockEntry[];
@@ -94,13 +110,16 @@ export const useSettingStore = create<SettingStore>()(
         nightMode: state.nightMode,
       }),
       // Fill in night mode fields missing from older saved prefs, rather than
-      // the default shallow merge dropping them.
+      // the default shallow merge dropping them, and drop retired values.
       merge: (persisted, current) => {
         const saved = (persisted ?? {}) as Partial<SettingStore>;
         return {
           ...current,
           ...saved,
-          nightMode: { ...current.nightMode, ...saved.nightMode },
+          nightMode: sanitizeNightMode({
+            ...current.nightMode,
+            ...saved.nightMode,
+          }),
         };
       },
     },

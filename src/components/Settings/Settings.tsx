@@ -1,9 +1,15 @@
 import "./Settings.css";
 import { Modal } from "../Modal/Modal";
-import { useSettingStore, type ClockEntry } from "../../store/SettingStore";
+import {
+  CLOCK_OPACITY_OPTIONS,
+  useSettingStore,
+  WAKE_MINUTE_OPTIONS,
+  type ClockEntry,
+} from "../../store/SettingStore";
 import { ZONES } from "../Clock/zones";
 import { THEMES } from "../../theme/theme";
 import Toggle from "../Toggle/toggle";
+import Segmented from "../Segmented/Segmented";
 import { useState } from "react";
 import Keyboard from "../Keyboard/keyboard";
 
@@ -198,38 +204,30 @@ export const Settings = () => {
             </select>
           </label>
         </div>
-        <label className="settings-field">
-          <span className="settings-field__label">
-            A tap shows photos for {nightMode.wakeMinutes} min
-          </span>
-          <input
-            type="range"
-            className="settings-range"
-            min={1}
-            max={30}
-            step={1}
+        <div className="settings-field">
+          <span className="settings-field__label">A tap shows photos for</span>
+          <Segmented
+            name="night-wake-minutes"
+            options={WAKE_MINUTE_OPTIONS.map((m) => ({
+              value: m,
+              label: `${m} min`,
+            }))}
             value={nightMode.wakeMinutes}
-            onChange={(e) =>
-              setNightMode({ wakeMinutes: Number(e.target.value) })
-            }
+            onChange={(wakeMinutes) => setNightMode({ wakeMinutes })}
           />
-        </label>
-        <label className="settings-field">
-          <span className="settings-field__label">
-            Clock brightness {Math.round(nightMode.clockOpacity * 100)}%
-          </span>
-          <input
-            type="range"
-            className="settings-range"
-            min={0.03}
-            max={0.5}
-            step={0.01}
+        </div>
+        <div className="settings-field">
+          <span className="settings-field__label">Clock brightness</span>
+          <Segmented
+            name="night-clock-opacity"
+            options={CLOCK_OPACITY_OPTIONS.map((o) => ({
+              value: o,
+              label: `${Math.round(o * 100)}%`,
+            }))}
             value={nightMode.clockOpacity}
-            onChange={(e) =>
-              setNightMode({ clockOpacity: Number(e.target.value) })
-            }
+            onChange={(clockOpacity) => setNightMode({ clockOpacity })}
           />
-        </label>
+        </div>
       </div>
       <Keyboard
         open={activeField !== null}
